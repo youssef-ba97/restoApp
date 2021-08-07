@@ -3,11 +3,13 @@ package com.example.ordersApp.Controller;
 import com.example.ordersApp.Service.PlatService;
 import com.example.ordersApp.model.Plat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/plat")
@@ -19,9 +21,26 @@ public class PlatController {
     public PlatController(PlatService platService){  //<----Constructor of this Service (platService)
         this.platService = platService;
     }
+
     @GetMapping
-    public List<Plat> getPlats() {
-        return platService.getPlats();
+    public ResponseEntity<?> findAllPlats() {
+        return new ResponseEntity<List<Plat>>(platService.findAllPlats(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        Optional<Plat> platOpt = platService.findById(id);
+
+        if (platOpt.isPresent()) {
+            return new ResponseEntity<Plat>(platOpt.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND) ;
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@Validated @RequestBody Plat plat){
+        platService.add(plat);
+
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
 }

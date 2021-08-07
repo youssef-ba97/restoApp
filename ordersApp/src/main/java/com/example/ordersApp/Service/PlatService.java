@@ -1,24 +1,17 @@
 package com.example.ordersApp.Service;
 
-import com.example.ordersApp.PlatRepository;
 import com.example.ordersApp.model.Plat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class PlatService {
+public interface PlatService {
 
-    private final PlatRepository platRepository;
+     public List<Plat> findAllPlats();
 
-    @Autowired
-    public PlatService(PlatRepository platRepository) {
-        this.platRepository = platRepository;
-    }
+     public Optional<Plat> findById(Long id);
 
-    public List<Plat> getPlats() {
-        return platRepository.findAll();
-
-    }
+     public void add(Plat plat);
 }

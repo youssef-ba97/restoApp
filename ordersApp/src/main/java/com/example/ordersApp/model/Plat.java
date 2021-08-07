@@ -1,12 +1,11 @@
 package com.example.ordersApp.model;
 
+import com.sun.istack.NotNull;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@EnableAutoConfiguration
-@Entity
 @Table
 public class Plat {
 
@@ -22,9 +21,33 @@ public class Plat {
     )
     @Column(nullable = false, updatable = false)
     private Long id;
+    @NotNull
     private String nomPlat;
+    @NotNull
+    private Double prix;
 
     public Plat() {
+    }
+
+    public Plat(Long id, String nomPlat, Double prix) {
+        this.id = id;
+        this.nomPlat = nomPlat;
+        this.prix = prix;
+    }
+
+
+    public Plat(String nomPlat, Double prix) {
+        this.nomPlat = nomPlat;
+        this.prix = prix;
+    }
+
+    @Override
+    public String toString() {
+        return "Plat{" +
+                "id=" + id +
+                ", nomPlat='" + nomPlat + '\'' +
+                ", prix=" + prix +
+                '}';
     }
 
     @Override
@@ -32,21 +55,20 @@ public class Plat {
         if (this == o) return true;
         if (!(o instanceof Plat)) return false;
         Plat plat = (Plat) o;
-        return Objects.equals(getId(), plat.getId()) && Objects.equals(getNomPlat(), plat.getNomPlat());
+        return getId().equals(plat.getId()) && Objects.equals(getNomPlat(), plat.getNomPlat()) && Objects.equals(getPrix(), plat.getPrix());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNomPlat());
+        return Objects.hash(getId(), getNomPlat(), getPrix());
     }
 
-    public Plat(String nomPlat) {   // si on change le type d'id on delete ce constructr
-        this.nomPlat = nomPlat;
+    public Double getPrix() {
+        return prix;
     }
 
-    public Plat(Long id, String nomPlat) {
-        this.id = id;
-        this.nomPlat = nomPlat;
+    public void setPrix(Double prix) {
+        this.prix = prix;
     }
 
     public Long getId() {
@@ -65,11 +87,4 @@ public class Plat {
         this.nomPlat = nomPlat;
     }
 
-    @Override
-    public String toString() {
-        return "Plat{" +
-                "id =" + id +
-                ", nom ='" + nomPlat + '\'' +
-                '}';
-    }
 }
