@@ -13,5 +13,9 @@ public interface PlatService {
 
      public Optional<Plat> findById(Long id);
 
+     public Optional<Plat> delete(Long id);
+
+     public Optional<Plat> update(Plat plat);
+
      public void add(Plat plat);
 }

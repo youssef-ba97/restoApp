@@ -43,4 +43,25 @@ public class PlatController {
 
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        Optional<Plat> optionalPlat = platService.delete(id);
+
+        if (optionalPlat.isPresent()){
+            return new ResponseEntity<Plat>(optionalPlat.get(), HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody Plat plat){
+        Optional<Plat> optionalPlat = platService.update(plat);
+
+        if (optionalPlat.isPresent()){
+            return new ResponseEntity<Plat>(optionalPlat.get(), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    }
 }
