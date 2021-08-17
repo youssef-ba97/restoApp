@@ -1,4 +1,4 @@
-package com.example.ordersApp.serviceImpl;
+package com.example.ordersApp.Service.serviceImpl;
 
 import com.example.ordersApp.Service.PlatService;
 import com.example.ordersApp.model.Plat;

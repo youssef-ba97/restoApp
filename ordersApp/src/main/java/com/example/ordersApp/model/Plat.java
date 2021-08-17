@@ -1,24 +1,16 @@
 package com.example.ordersApp.model;
 
 import com.sun.istack.NotNull;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
-@Table
+@Entity
 public class Plat {
 
     @Id
-    @SequenceGenerator(
-            name = "plat_sequence",
-            sequenceName = "plat_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE, ///on peut changer le type d'id ou bien ca marche avec seq ?? :/
-            generator = "plat_sequence"
-    )
     @Column(nullable = false, updatable = false)
     private Long id;
     @NotNull
@@ -36,10 +28,6 @@ public class Plat {
     }
 
 
-    public Plat(String nomPlat, Double prix) {
-        this.nomPlat = nomPlat;
-        this.prix = prix;
-    }
 
     @Override
     public String toString() {
