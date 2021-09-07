@@ -1,11 +1,13 @@
 package com.example.ordersApp.Controller;
 
 import com.example.ordersApp.Service.UserService;
+import com.example.ordersApp.converter.UserConverter;
+import com.example.ordersApp.dto.UserDto;
 import com.example.ordersApp.model.User;
+import com.example.ordersApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,26 +24,30 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> findAllUsers() {
-        return new ResponseEntity<List<User>>(userService.findAllUsers(), HttpStatus.OK);
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    UserConverter converter;
+
+    @GetMapping("/findAll")
+    public List<UserDto> findAll() {
+        List<User> findAll = userRepository.findAll();
+        return converter.entityToDto(findAll);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<User> userOpt = userService.findUserById(id);
+    @GetMapping("/find/{ID}")
+    public UserDto findById(@PathVariable(value = "ID") Long id) {
+        User orElse = userRepository.findById(id).orElse(null);
+        return converter.entityToDto(orElse);
 
-        if (userOpt.isPresent()) {
-            return new ResponseEntity<User>(userOpt.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND) ;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@Validated @RequestBody User user){
-        userService.add(user);
+    public UserDto add(@RequestBody UserDto dto) {
 
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        User user = converter.dtoToEntity(dto);
+        user=  userRepository.save(user);
+        return converter.entityToDto(user);
     }
 
     @DeleteMapping("/delete/{id}")

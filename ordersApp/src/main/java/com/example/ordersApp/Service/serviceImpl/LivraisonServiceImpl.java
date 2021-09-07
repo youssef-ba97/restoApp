@@ -29,20 +29,20 @@ public class LivraisonServiceImpl implements LivraisonService {
     }
     @Override
     public List<Livraison> findAllLivraisons() {
-        return livraisonsList.stream().sorted(Comparator.comparing(Livraison::getLivraisonId)).collect(Collectors.toList());
+        return livraisonsList.stream().sorted(Comparator.comparing(Livraison::getId)).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Livraison> findLivraisonById(Long id) {
-        return livraisonsList.stream().filter(livraison -> livraison.getLivraisonId() == id).findFirst();
+        return livraisonsList.stream().filter(livraison -> livraison.getId() == id).findFirst();
     }
 
     @Override
     public Optional<Livraison> deleteLivraison(Long id) {
-        Optional<Livraison> livraisonOptional = livraisonsList.stream().filter(livraison -> livraison.getLivraisonId() == id).findFirst();
+        Optional<Livraison> livraisonOptional = livraisonsList.stream().filter(livraison -> livraison.getId() == id).findFirst();
 
         if (livraisonOptional.isPresent()){
-            livraisonsList = livraisonsList.stream().filter(livraison -> livraison.getLivraisonId() != livraisonOptional.get().getLivraisonId()).collect(Collectors.toList());
+            livraisonsList = livraisonsList.stream().filter(livraison -> livraison.getId() != livraisonOptional.get().getId()).collect(Collectors.toList());
             return livraisonOptional;
         }
 
@@ -51,13 +51,13 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     public Optional<Livraison> updateLivraison(Livraison livraison) {
-        Optional<Livraison> livraisonOptional = livraisonsList.stream().filter(c -> c.getLivraisonId() == livraison.getLivraisonId()).findFirst();
+        Optional<Livraison> livraisonOptional = livraisonsList.stream().filter(c -> c.getId() == livraison.getId()).findFirst();
 
         if (livraisonOptional.isPresent()){
             Livraison existingLivraison = livraisonOptional.get();
 
-            if (livraison.getLivraisonId() != null){
-                existingLivraison.setLivraisonId(livraison.getLivraisonId());
+            if (livraison.getId() != null){
+                existingLivraison.setId(livraison.getId());
             }
             if (livraison.getLivraisonDate() != null){
                 existingLivraison.setLivraisonDate(livraison.getLivraisonDate());
@@ -67,8 +67,8 @@ public class LivraisonServiceImpl implements LivraisonService {
                 existingLivraison.setPrixTotal(livraison.getPrixTotal());
             }
 
-            if (livraison.getLivraisonUser() != null){
-                existingLivraison.setLivraisonUser(livraison.getLivraisonUser());
+            if (livraison.getUser() != null){
+                existingLivraison.setUser(livraison.getUser());
             }
 
             if (livraison.getCommandesList() != null){
@@ -78,7 +78,7 @@ public class LivraisonServiceImpl implements LivraisonService {
 
             livraisonsList = livraisonsList
                     .stream()
-                    .filter(u -> u.getLivraisonId() != existingLivraison.getLivraisonId())
+                    .filter(u -> u.getId() != existingLivraison.getId())
                     .collect(Collectors.toList());
             livraisonsList.add(existingLivraison);
 
@@ -89,7 +89,7 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     public void add(Livraison livraison) {
-        livraison.setLivraisonId(COUNTER++);
+        livraison.setId(COUNTER++);
         livraisonsList.add(livraison);
     }
 

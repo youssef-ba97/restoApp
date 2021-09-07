@@ -27,20 +27,20 @@ public class CommandeServiceImpl implements CommandeService {
     }
     @Override
     public List<Commande> findAllCommandes() {
-        return commandesList.stream().sorted(Comparator.comparing(Commande::getCommandeId)).collect(Collectors.toList());
+        return commandesList.stream().sorted(Comparator.comparing(Commande::getId)).collect(Collectors.toList());
     }
 
     @Override
     public Optional<Commande> findCommandeById(Long id) {
-        return commandesList.stream().filter(commande -> commande.getCommandeId() == id).findFirst();
+        return commandesList.stream().filter(commande -> commande.getId() == id).findFirst();
     }
 
     @Override
     public Optional<Commande> deleteCommande(Long id) {
-        Optional<Commande> commandeOptional = commandesList.stream().filter(commande -> commande.getCommandeId() == id).findFirst();
+        Optional<Commande> commandeOptional = commandesList.stream().filter(commande -> commande.getId() == id).findFirst();
 
         if (commandeOptional.isPresent()){
-            commandesList = commandesList.stream().filter(commande -> commande.getCommandeId() != commandeOptional.get().getCommandeId()).collect(Collectors.toList());
+            commandesList = commandesList.stream().filter(commande -> commande.getId() != commandeOptional.get().getId()).collect(Collectors.toList());
             return commandeOptional;
         }
 
@@ -49,13 +49,13 @@ public class CommandeServiceImpl implements CommandeService {
 
     @Override
     public Optional<Commande> updateCommande(Commande commande) {
-        Optional<Commande> commandeOptional = commandesList.stream().filter(c -> c.getCommandeId() == commande.getCommandeId()).findFirst();
+        Optional<Commande> commandeOptional = commandesList.stream().filter(c -> c.getId() == commande.getId()).findFirst();
 
         if (commandeOptional.isPresent()){
             Commande existingCommande = commandeOptional.get();
 
-            if (commande.getCommandeId() != null){
-                existingCommande.setCommandeId(commande.getCommandeId());
+            if (commande.getId() != null){
+                existingCommande.setId(commande.getId());
             }
             if (commande.getCommandeDate() != null){
                 existingCommande.setCommandeDate(commande.getCommandeDate());
@@ -65,8 +65,8 @@ public class CommandeServiceImpl implements CommandeService {
                 existingCommande.setPrixTotal(commande.getPrixTotal());
             }
 
-            if (commande.getCommandeUser() != null){
-                existingCommande.setCommandeUser(commande.getCommandeUser());
+            if (commande.getUser() != null){
+                existingCommande.setUser(commande.getUser());
             }
 
             if (commande.getCommandeItemsList() != null){
@@ -76,7 +76,7 @@ public class CommandeServiceImpl implements CommandeService {
 
             commandesList = commandesList
                     .stream()
-                    .filter(u -> u.getCommandeId() != existingCommande.getCommandeId())
+                    .filter(u -> u.getId() != existingCommande.getId())
                     .collect(Collectors.toList());
             commandesList.add(existingCommande);
 
@@ -87,7 +87,7 @@ public class CommandeServiceImpl implements CommandeService {
 
     @Override
     public void add(Commande commande) {
-        commande.setCommandeId(COUNTER++);
+        commande.setId(COUNTER++);
         commandesList.add(commande);
     }
 

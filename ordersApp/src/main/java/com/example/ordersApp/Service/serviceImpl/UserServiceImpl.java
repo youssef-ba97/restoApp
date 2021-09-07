@@ -1,12 +1,12 @@
 package com.example.ordersApp.Service.serviceImpl;
 
 import com.example.ordersApp.Service.UserService;
-import com.example.ordersApp.enums.Role;
 import com.example.ordersApp.model.User;
+import com.example.ordersApp.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,14 +19,16 @@ public class UserServiceImpl implements UserService {
     private static Long COUNTER = 1L;
 
     static {
-        User user = new User(COUNTER++, "Youssef", "ben abdallah", "ret3i@hotmail.com", Role.admin , 25333444, "25 rue xxxxxx ariana", "155azerty",null);
+        User user = new User(COUNTER++, "Youssef", "ben abdallah", "ret3i@hotmail.com", true , 25333444, "25 rue xxxxxx ariana", "155azerty",null);
         usersList.add(user);
-
-
     }
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public List<User> findAllUsers() {
-        return usersList.stream().sorted(Comparator.comparing(User::getId)).collect(Collectors.toList());
+        return userRepository.findAll();
     }
 
 
@@ -66,8 +68,8 @@ public class UserServiceImpl implements UserService {
                 existingUser.setEmail(user.getEmail());
             }
 
-            if (user.getRole() != null){
-                existingUser.setRole(user.getRole());
+            if (user.getIsAdmin() != null){
+                existingUser.setIsAdmin(user.getIsAdmin());
             }
 
             if (user.getPassword() != null){
